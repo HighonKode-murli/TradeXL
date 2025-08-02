@@ -1,0 +1,71 @@
+import Trade from "../models/trade.model.js";
+
+const createTrade = async (req,res)=>{
+    try {
+        const newTrade = await Trade.create(req.body)
+        const trade = await newTrade.save()
+        res.json(newTrade)
+    }
+    catch(error){
+        console.log(error)
+        res.status(400).json(error)
+    }
+}
+
+const getAllTrades = async (req,res)=>{
+    try{
+        const allTrades = await Trade.find()
+        res.json(allTrades)
+    }
+    catch(error){
+        console.log(error)
+        res.status(400).json(error)
+    }
+}
+
+const getOneTrade = async (req,res)=>{
+    try{
+        const oneTrade = await Trade.findById(req.params.id)
+        res.json(oneTrade)
+    }
+    catch(error){
+        console.log(error)
+        res.status(400).json(error)
+    }
+}
+
+const editTrade = async (req,res)=>{
+    const options = {
+        new: true,
+        runValidators: true
+    }
+    try{
+        const updatedTrade = await Trade.findByIdAndUpdate(req.params.id,req.body,options)
+        res.json(updatedTrade)
+    }
+    catch(error){
+        console.log(error)
+        res.status(400).json(error)
+    }
+}
+
+const deleteOneTrade = async (req,res)=>{
+    try{
+        const deleteTrade = await Trade.findByIdAndDelete(req.params.id)
+        res.json(deleteTrade)
+    }
+    catch(error){
+        console.log(error)
+        res.status(400).json(error)
+    }
+}
+
+const TradeController = {
+    createTrade: createTrade,
+    getAllTrades: getAllTrades,
+    getOneTrade: getOneTrade,
+    editTrade: editTrade,
+    deleteOneTrade: deleteOneTrade,
+}
+
+export default TradeController
